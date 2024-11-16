@@ -1,6 +1,10 @@
-import React from "react";
+import { auth } from "@/auth";
 
-const testPage = () => {
+const testPage = async () => {
+  const session = await auth();
+
+  console.log(session);
+
   return <div>testPage</div>;
 };
 
