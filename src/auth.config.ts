@@ -34,7 +34,7 @@ export default {
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
-        pasword: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const validatedFields = CredentialsSchema.safeParse(credentials);
@@ -59,6 +59,7 @@ export default {
         const passwordsMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordsMatch) {
+          console.log("Invalid password for user:", email);
           return null;
         }
 
@@ -74,14 +75,14 @@ export default {
     strategy: "jwt",
   },
   callbacks: {
-    session({ session, token }) {
+    async session({ session, token }) {
       if (token.id) {
         session.user.id = token.id;
       }
 
       return session;
     },
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
