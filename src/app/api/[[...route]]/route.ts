@@ -1,11 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import {
-  AuthConfig,
-  authHandler,
-  initAuthConfig,
-  verifyAuth,
-} from "@hono/auth-js";
+import { AuthConfig, authHandler, initAuthConfig } from "@hono/auth-js";
 
 import authConfig from "@/auth.config";
 
@@ -23,19 +18,6 @@ const app = new Hono().basePath("/api");
 
 app.use("*", initAuthConfig(getAuthConfig));
 app.use("/auth/*", authHandler());
-app.use("/hello", verifyAuth());
-
-app.get("/hello", (c) => {
-  return c.json({
-    message: "Hello Next.js!",
-  });
-});
-
-app.get("/hello1", (c) => {
-  return c.json({
-    message: "Hello Next.js!",
-  });
-});
 
 export const GET = handle(app);
 export const POST = handle(app);
