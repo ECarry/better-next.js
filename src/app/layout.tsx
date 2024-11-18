@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/components/providers";
+
 import localFont from "next/font/local";
 import "./globals.css";
 import { auth } from "@/auth";
@@ -33,7 +36,10 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </body>
       </html>
     </SessionProvider>

@@ -1,12 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { Loader2, TriangleAlert } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Card,
   CardTitle,
@@ -15,8 +19,10 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
-export const LoginCard = () => {
+export const SignInCard = () => {
   const [loading, setLoading] = useState(false);
+  const [loadingGithub, setLoadingGithub] = useState(false);
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingLogin, setLoadingLogin] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -35,6 +41,14 @@ export const LoginCard = () => {
       password: password,
       callbackUrl: "/",
     });
+  };
+
+  const onProviderSignIn = (provider: "github" | "google") => {
+    setLoading(true);
+    setLoadingGithub(provider === "github");
+    setLoadingGoogle(provider === "google");
+
+    signIn(provider, { callbackUrl: "/" });
   };
 
   return (
@@ -77,6 +91,43 @@ export const LoginCard = () => {
             )}
           </Button>
         </form>
+        <Separator />
+        <div className="flex flex-col gap-y-2.5">
+          <Button
+            onClick={() => onProviderSignIn("google")}
+            size="lg"
+            variant="outline"
+            className="w-full relative"
+            disabled={loading}
+          >
+            {loadingGoogle ? (
+              <Loader2 className="mr-2 size-5 top-2.5 left-2.5 absolute animate-spin" />
+            ) : (
+              <FcGoogle className="mr-2 size-5 top-2.5 left-2.5 absolute" />
+            )}
+            Continue with Google
+          </Button>
+          <Button
+            onClick={() => onProviderSignIn("github")}
+            size="lg"
+            variant="outline"
+            disabled={loading}
+            className="w-full relative"
+          >
+            {loadingGithub ? (
+              <Loader2 className="mr-2 size-5 top-2.5 left-2.5 absolute animate-spin" />
+            ) : (
+              <FaGithub className="mr-2 size-5 top-2.5 left-2.5 absolute" />
+            )}
+            Continue with Github
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" onClick={() => setLoading(true)}>
+            <span className="text-sky-700 hover:underline">Sign up</span>
+          </Link>
+        </p>
       </CardContent>
     </Card>
   );

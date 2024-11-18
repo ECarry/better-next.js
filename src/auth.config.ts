@@ -2,8 +2,9 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
 import { eq } from "drizzle-orm";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JWT } from "next-auth/jwt";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -66,10 +67,12 @@ export default {
         return user;
       },
     }),
+    GitHub,
+    Google,
   ],
   pages: {
-    signIn: "/login",
-    error: "/login",
+    signIn: "/sign-in",
+    error: "/sign-in",
   },
   session: {
     strategy: "jwt",
