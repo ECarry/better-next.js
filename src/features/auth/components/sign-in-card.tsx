@@ -30,17 +30,17 @@ export const SignInCard = () => {
 
   const params = useSearchParams();
   const error = params.get("error");
-
-  // TODO: Callback url
+  const callbackUrl = params.get("callbackUrl") || "/";
+  
   const onCredentialSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setLoadingLogin(true);
 
     signIn("credentials", {
-      email: email,
-      password: password,
-      callbackUrl: "/",
+      email,
+      password,
+      callbackUrl
     });
   };
 
@@ -49,7 +49,7 @@ export const SignInCard = () => {
     setLoadingGithub(provider === "github");
     setLoadingGoogle(provider === "google");
 
-    signIn(provider, { callbackUrl: "/" });
+    signIn(provider, { callbackUrl });
   };
 
   return (
