@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Modern Stack Template 🚀
 
-## Getting Started
+A modern, feature-rich Next.js template that helps you kickstart your project with the best tools and practices in the React ecosystem.
 
-First, run the development server:
+## ✨ Features
+
+- ⚡️ **Next.js 15** - The latest version with App Router and Server Components
+- 🎨 **Tailwind CSS** - A utility-first CSS framework for rapid UI development
+- 🔐 **Authentication** - Secure authentication using Auth.js (formerly NextAuth.js)
+- 🗃️ **Drizzle ORM** - Type-safe database queries and schema management
+- 🎯 **shadcn/ui** - Beautiful and accessible UI components
+- 📦 **TypeScript** - Type safety and better developer experience
+- 🔍 **ESLint & Prettier** - Code linting and formatting
+- 🧪 **Testing Setup** - Ready-to-use testing configuration
+- 🚄 **Bun** - Super fast JavaScript runtime and package manager
+
+## 🚀 Getting Started
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ecarry/nextjs-template
+cd nextjs-template
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up your environment variables:
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Start the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+bun run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Visit `http://localhost:3000` to see your application.
 
-## Deploy on Vercel
+## 📚 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+├── app/                # Next.js App Router directory
+├── components/         # React components
+├── lib/               # Utility functions and configurations
+├── db/                # Database schema and configurations
+├── styles/            # Global styles and Tailwind configuration
+└── public/            # Static assets
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Technologies
+
+- **Framework**: Next.js 15
+- **Package Manager**: Bun
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Database ORM**: Drizzle
+- **Authentication**: Auth.js
+- **State Management**: React Hooks + Context
+- **Deployment**: Vercel (recommended)
+
+## 🔧 Configuration
+
+### Database Setup
+
+1. Update your database configuration in `drizzle.config.ts`
+2. Run migrations:
+
+```bash
+bun db:migrate
+```
+
+### Authentication
+
+1. Configure your authentication providers in `.env.local`
+2. Update authentication options in `app/api/auth/[...nextauth]/route.ts`
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 💫 Support
+
+If you find this template helpful, please give it a ⭐️ on GitHub!
