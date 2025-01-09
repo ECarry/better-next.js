@@ -1,5 +1,15 @@
 "use client";
 
+// External dependencies
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signUp } from "@/feature/auth/lib/auth-client";
+
+// Internal dependencies - UI Components
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,13 +19,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import { signUp } from "@/feature/auth/lib/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -43,6 +46,7 @@ export function SignUp() {
                 id="first-name"
                 placeholder="Max"
                 required
+                disabled={loading}
                 onChange={(e) => {
                   setFirstName(e.target.value);
                 }}
@@ -54,6 +58,7 @@ export function SignUp() {
               <Input
                 id="last-name"
                 placeholder="Robinson"
+                disabled={loading}
                 required
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -67,6 +72,7 @@ export function SignUp() {
             <Input
               id="email"
               type="email"
+              disabled={loading}
               placeholder="m@example.com"
               required
               onChange={(e) => {
@@ -80,6 +86,7 @@ export function SignUp() {
             <Input
               id="password"
               type="password"
+              disabled={loading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
@@ -91,6 +98,7 @@ export function SignUp() {
             <Input
               id="password_confirmation"
               type="password"
+              disabled={loading}
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
               autoComplete="new-password"
@@ -131,6 +139,18 @@ export function SignUp() {
               "Create an account"
             )}
           </Button>
+        </div>
+
+        <div className="flex justify-center w-full border-t py-4">
+          <p className="text-center text-xs text-neutral-500">
+            Already have an account?{" "}
+            <span
+              className="text-orange-400 cursor-pointer"
+              onClick={() => router.push("/sign-in")}
+            >
+              Sign In
+            </span>
+          </p>
         </div>
       </CardContent>
       <CardFooter>
