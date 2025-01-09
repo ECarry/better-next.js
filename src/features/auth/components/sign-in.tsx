@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { signIn } from "@/feature/auth/lib/auth-client";
+import { signIn } from "@/features/auth/lib/auth-client";
 
 // Internal dependencies - UI Components
 import { toast } from "sonner";

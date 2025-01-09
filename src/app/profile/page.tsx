@@ -1,5 +1,5 @@
-import UserCard from "@/feature/auth/components/user-card";
-import { auth } from "@/feature/auth/lib/auth";
+import UserCard from "@/features/auth/components/user-card";
+import { auth } from "@/features/auth/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
