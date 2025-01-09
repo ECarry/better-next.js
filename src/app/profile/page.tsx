@@ -1,3 +1,4 @@
+import UserCard from "@/feature/auth/components/user-card";
 import { auth } from "@/feature/auth/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,9 +15,13 @@ const ProfilePage = async () => {
     throw redirect("/sign-in");
   });
   return (
-    <div>
-      <p>{JSON.stringify(session, null, 2)}</p>
-      <p>{JSON.stringify(activeSessions, null, 2)}</p>
+    <div className="w-full">
+      <div className="flex gap-4 flex-col max-w-[800px] mx-auto">
+        <UserCard
+          session={JSON.parse(JSON.stringify(session))}
+          activeSessions={JSON.parse(JSON.stringify(activeSessions))}
+        />
+      </div>
     </div>
   );
 };
