@@ -1,7 +1,22 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// External dependencies
+import { useState } from "react";
+import { UAParser } from "ua-parser-js";
+import { useRouter } from "next/navigation";
+import { client, signOut, useSession } from "@/feature/auth/lib/auth-client";
+
+// Internal dependencies - UI Components
+import Image from "next/image";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Edit, Laptop, Loader2, LogOut, X } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -9,8 +24,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -20,21 +33,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { client, signOut, useSession } from "@/feature/auth/lib/auth-client";
-import { Session } from "@/feature/auth/lib/auth-types";
-import { Edit, Laptop, Loader2, LogOut, X } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
-import { UAParser } from "ua-parser-js";
 
-export default function UserCard(props: {
+// Types
+import { Session } from "@/feature/auth/lib/auth-types";
+
+const UserCard = (props: {
   session: Session | null;
   activeSessions: Session["session"][];
-}) {
+}) => {
   const router = useRouter();
   const { data } = useSession();
   const session = data || props.session;
@@ -189,18 +195,20 @@ export default function UserCard(props: {
       </CardFooter>
     </Card>
   );
-}
+};
 
-async function convertImageToBase64(file: File): Promise<string> {
+export default UserCard;
+
+const convertImageToBase64 = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result as string);
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
-}
+};
 
-function ChangePassword() {
+const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -232,7 +240,27 @@ function ChangePassword() {
         </DialogHeader>
         <div className="grid gap-2">
           <Label htmlFor="current-password">Current Password</Label>
-
+          <PasswordInput
+            id="current-password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            autoComplete="new-password"
+            placeholder="Password"
+          />
+          <Label htmlFor="new-password">New Password</Label>
+          <PasswordInput
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            autoComplete="new-password"
+            placeholder="New Password"
+          />
+          <Label htmlFor="password">Confirm Password</Label>
+          <PasswordInput
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            autoComplete="new-password"
+            placeholder="Confirm Password"
+          />
           <div className="flex gap-2 items-center">
             <Checkbox
               onCheckedChange={(checked) =>
@@ -284,9 +312,9 @@ function ChangePassword() {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-function EditUserDialog() {
+const EditUserDialog = () => {
   const { data } = useSession();
   const [name, setName] = useState<string>();
   const router = useRouter();
@@ -398,4 +426,4 @@ function EditUserDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+};
