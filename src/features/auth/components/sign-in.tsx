@@ -56,6 +56,8 @@ export default function SignIn() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await signIn.email({
       ...values,
+      callbackURL: "/profile",
+      rememberMe,
       fetchOptions: {
         onRequest: () => {
           setLoading(true);
