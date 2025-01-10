@@ -1,3 +1,9 @@
+import TechMarquee from "@/components/tech-marquee";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <TechMarquee />
+    </div>
+  );
 }
