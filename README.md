@@ -46,12 +46,20 @@ Visit `http://localhost:3000` to see your application.
 ## 📚 Project Structure
 
 ```
-├── app/                # Next.js App Router directory
-├── components/         # React components
-├── lib/               # Utility functions and configurations
-├── db/                # Database schema and configurations
-├── styles/            # Global styles and Tailwind configuration
-└── public/            # Static assets
+./src
+├── app
+│   ├── (auth)
+│   ├── (home)
+│   ├── api
+│   ├── favicon.ico
+│   ├── globals.css
+│   └── layout.tsx
+├── components
+├── db
+├── features
+│   └── auth
+└── lib
+    └── utils.ts
 ```
 
 ## 🛠️ Technologies
@@ -79,7 +87,6 @@ bun db:migrate
 ### Authentication
 
 1. Configure your authentication providers in `.env.local`
-2. Update authentication options in `app/api/auth/[...nextauth]/route.ts`
 
 ## 📝 License
 
