@@ -1,7 +1,6 @@
 import UserCard from "@/features/auth/components/user-card";
 import { auth } from "@/features/auth/lib/auth";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 const ProfilePage = async () => {
   const [session, activeSessions] = await Promise.all([
@@ -11,9 +10,8 @@ const ProfilePage = async () => {
     auth.api.listSessions({
       headers: await headers(),
     }),
-  ]).catch(() => {
-    throw redirect("/sign-in");
-  });
+  ]);
+
   return (
     <div className="w-full">
       <div className="flex gap-4 flex-col max-w-[800px] mx-auto">
