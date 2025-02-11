@@ -8,6 +8,7 @@ A modern, feature-rich Next.js template that helps you kickstart your project wi
 - 🎨 **Tailwind CSS** - A utility-first CSS framework for rapid UI development
 - 🔐 **Authentication** - Secure authentication using Auth.js (formerly NextAuth.js)
 - 🗃️ **Drizzle ORM** - Type-safe database queries and schema management
+- 🔄 **tRPC** - for type-safe APIs
 - 🎯 **shadcn/ui** - Beautiful and accessible UI components
 - 📦 **TypeScript** - Type safety and better developer experience
 - 🔍 **ESLint & Prettier** - Code linting and formatting

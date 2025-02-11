@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/features/auth/lib/auth-client";
+import { signUp } from "@/modules/auth/lib/auth-client";
 
 // Internal dependencies - UI Components
 import { toast } from "sonner";
