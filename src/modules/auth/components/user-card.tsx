@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { UAParser } from "ua-parser-js";
 import { useRouter } from "next/navigation";
-import { client, signOut, useSession } from "@/features/auth/lib/auth-client";
+import { client, signOut, useSession } from "@/modules/auth/lib/auth-client";
 
 // Internal dependencies - UI Components
 import Image from "next/image";
@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/dialog";
 
 // Types
-import { Session } from "@/features/auth/lib/auth-types";
+import { Session } from "@/modules/auth/lib/auth-types";
 
 const UserCard = (props: {
   session: Session | null;
