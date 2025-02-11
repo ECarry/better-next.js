@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import SignIn from "@/features/auth/components/sign-in";
+import SignIn from "@/modules/auth/components/sign-in";
 
 export const metadata: Metadata = {
   title: "Sign In",

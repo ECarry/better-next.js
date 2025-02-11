@@ -4,7 +4,7 @@ import Link from "next/link";
 // Internal dependencies - UI Components
 import FlipLink from "./flip-link";
 import { TbBrandNextjs } from "react-icons/tb";
-import UserButton from "@/features/auth/components/user-button";
+import UserButton from "@/modules/auth/components/user-button";
 
 const Navbar = () => {
   return (

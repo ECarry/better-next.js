@@ -1,5 +1,5 @@
-import UserCard from "@/features/auth/components/user-card";
-import { auth } from "@/features/auth/lib/auth";
+import UserCard from "@/modules/auth/components/user-card";
+import { auth } from "@/modules/auth/lib/auth";
 import { headers } from "next/headers";
 
 const ProfilePage = async () => {
