@@ -7,6 +7,7 @@ import {
   SiVercel,
   SiAuthelia,
   SiDrizzle,
+  SiTrpc,
 } from "react-icons/si";
 import { MarqueeCard } from "./marquee-card";
 
@@ -26,6 +27,10 @@ const technologies = [
   {
     icon: SiDrizzle,
     name: "Drizzle ORM",
+  },
+  {
+    icon: SiTrpc,
+    name: "tRPC",
   },
   {
     icon: SiTypescript,
