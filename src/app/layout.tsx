@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next Template",
+  title: "BETTER-Next.JS",
   description: "A Next.js template with modern features",
 };
 

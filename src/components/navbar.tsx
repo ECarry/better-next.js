@@ -11,7 +11,7 @@ const Navbar = () => {
     <div className="max-w-7xl mx-auto h-16 w-full flex items-center px-4">
       <Link href="/" className="flex items-center gap-2">
         <TbBrandNextjs size={40} />
-        <h1 className="text-2xl font-bold">NEXT-TEMPLATE</h1>
+        <h1 className="text-xl font-bold">BETTER-Next.JS</h1>
       </Link>
 
       <nav className="hidden lg:flex gap-4 ml-6">
