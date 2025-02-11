@@ -1,5 +1,4 @@
 import { db } from "@/db/drizzle";
-import { Role } from "@/db/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin } from "better-auth/plugins";
@@ -19,8 +18,8 @@ export const auth = betterAuth({
   },
   plugins: [
     admin({
-      defaultRole: Role.USER,
-      adminRole: [Role.ADMIN, Role.USER, Role.PLUS],
+      defaultRole: "user",
+      adminRole: ["admin", "user", "plus"],
       defaultBanReason: "Spamming",
       defaultBanExpiresIn: 60 * 60 * 24, // 1 day
     }),

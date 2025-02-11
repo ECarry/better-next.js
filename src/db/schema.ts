@@ -13,18 +13,8 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 
-// // Role enum definition
-const ROLE_VALUES = ["admin", "user", "plus"] as const;
-export type RoleValue = (typeof ROLE_VALUES)[number];
-
-export enum Role {
-  ADMIN = "admin",
-  USER = "user",
-  PLUS = "plus",
-}
-
-// Role type for type safety
-export const roleEnum = pgEnum("user_role", ROLE_VALUES);
+// Role enum definition
+export const roleEnum = pgEnum("user_role", ["admin", "user", "plus"]);
 
 // ⌚️ Reusable timestamps - Define once, use everywhere!
 export const timestamps = {
@@ -38,7 +28,7 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),
   image: text("image"),
-  role: roleEnum("role").notNull().default(Role.USER),
+  role: roleEnum("role").notNull().default("user"),
   banned: boolean("banned").notNull().default(false),
   banReason: text("ban_reason").notNull().default(""),
   banExpires: bigint("ban_expires", { mode: "number" }),
