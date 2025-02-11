@@ -16,8 +16,9 @@ export const createTRPCContext = cache(async () => {
   });
 
   const userId = session?.user.id ?? null;
+  const role = session?.user.role ?? null;
 
-  return { userId };
+  return { userId, role };
 });
 
 // types
@@ -47,6 +48,18 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(
 
   if (!ctx.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return opts.next({ ctx: { ...ctx } });
+});
+export const adminProcedure = t.procedure.use(async function isAuthed(opts) {
+  const { ctx } = opts;
+
+  if (ctx.role !== "admin") {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Access denied. Admin privileges required.",
+    });
   }
 
   return opts.next({ ctx: { ...ctx } });

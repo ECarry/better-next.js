@@ -1,11 +1,8 @@
-import { createTRPCRouter, protectedProcedure } from "../init";
+import { createTRPCRouter } from "@/trpc/init";
+import { postsRouter } from "@/modules/posts/server/procedures";
 
 export const appRouter = createTRPCRouter({
-  hello: protectedProcedure.query(() => {
-    return {
-      greeting: `hello world`,
-    };
-  }),
+  posts: postsRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
