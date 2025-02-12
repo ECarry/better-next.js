@@ -12,7 +12,6 @@ A modern, feature-rich Next.js template that helps you kickstart your project wi
 - 🎯 **shadcn/ui** - Beautiful and accessible UI components
 - 📦 **TypeScript** - Type safety and better developer experience
 - 🔍 **ESLint & Prettier** - Code linting and formatting
-- 🧪 **Testing Setup** - Ready-to-use testing configuration
 - 🚄 **Bun** - Super fast JavaScript runtime and package manager
 
 ## 🚀 Getting Started
@@ -47,47 +46,52 @@ Visit `http://localhost:3000` to see your application.
 ## 📚 Project Structure
 
 ```
-./src
-├── app
-│   ├── (auth)
-│   ├── (home)
-│   ├── api
-│   ├── favicon.ico
-│   ├── globals.css
-│   └── layout.tsx
-├── components
-├── db
-├── features
-│   └── auth
-└── lib
-    └── utils.ts
+better-nextjs/
+├── src/
+│   ├── app/
+│   │   ├── (auth)/
+│   │   ├── (home)/
+│   │   └── api/
+│   ├── components/
+│   │   └── ui/
+│   ├── db/
+│   │   ├── drizzle.ts
+│   │   └── schema.ts
+│   ├── lib/
+│   │   └── utils.ts
+│   ├── modules/
+│   │   ├── auth/
+│   │   └── posts/
+│   └── trpc/
+│       └── routers/
+├── package.json
+├── tsconfig.json
+├── next.config.ts
+├── drizzle.config.ts
+├── postcss.config.mjs
+└── README.md
 ```
 
 ## 🛠️ Technologies
 
 - **Framework**: Next.js 15
+- **API**: tRPC
 - **Package Manager**: Bun
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
 - **Database ORM**: Drizzle
-- **Authentication**: Auth.js
-- **State Management**: React Hooks + Context
+- **Authentication**: Better Auth
 - **Deployment**: Vercel (recommended)
 
 ## 🔧 Configuration
 
 ### Database Setup
 
-1. Update your database configuration in `drizzle.config.ts`
-2. Run migrations:
+Run migrations:
 
 ```bash
-bun db:migrate
+bunx drizzle-kit push
 ```
-
-### Authentication
-
-1. Configure your authentication providers in `.env.local`
 
 ## 📝 License
 
