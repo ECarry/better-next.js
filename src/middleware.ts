@@ -16,11 +16,7 @@ export default async function authMiddleware(request: NextRequest) {
     }
   );
 
-  console.log({
-    midSession: session?.user.role,
-  });
-
-  if (session?.user.role !== "admin") {
+  if (!session?.user) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
@@ -29,5 +25,5 @@ export default async function authMiddleware(request: NextRequest) {
 
 // Need auth path
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/profile"],
 };
