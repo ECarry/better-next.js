@@ -9,8 +9,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // read route params
   const slug = (await params).postSlug;
 
-  console.log({ slug });
-
   // fetch data
   const post = await trpc.posts.getOne({ slug });
 
