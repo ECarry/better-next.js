@@ -3,6 +3,8 @@ import { posts } from "@/db/schema";
 import { baseProcedure, createTRPCRouter, adminProcedure } from "@/trpc/init";
 import { desc } from "drizzle-orm";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
 
 export const postsRouter = createTRPCRouter({
   create: adminProcedure
@@ -29,4 +31,21 @@ export const postsRouter = createTRPCRouter({
 
     return data;
   }),
+  getOne: baseProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { slug } = input;
+
+      const [post] = await db.select().from(posts).where(eq(posts.slug, slug));
+
+      if (!post) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Post not found" });
+      }
+
+      return post;
+    }),
 });
