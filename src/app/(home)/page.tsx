@@ -212,7 +212,7 @@ export default function Home() {
 
       {/* Tech Stack Marquee */}
       <section className="py-12 border-y border-border relative overflow-hidden bg-muted/30">
-        <div className="container mx-auto">
+        <div className="">
           <h2 className="text-center text-2xl font-bold mb-6">
             Powered by Modern Technologies
           </h2>

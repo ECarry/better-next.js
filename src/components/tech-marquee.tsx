@@ -10,6 +10,7 @@ import {
   SiTrpc,
 } from "react-icons/si";
 import { MarqueeCard } from "./marquee-card";
+import { cn } from "@/lib/utils";
 
 const technologies = [
   {
@@ -50,9 +51,13 @@ const technologies = [
   },
 ];
 
-const TechMarquee = () => {
+interface Props {
+  bgColor?: string;
+}
+
+const TechMarquee = ({ bgColor }: Props) => {
   return (
-    <div className="flex items-center gap-12 p-8 rounded-xl">
+    <div className="flex items-center gap-12 py-8 rounded-xl">
       <div className="relative flex-1 overflow-hidden">
         <MarqueeCard pauseOnHover className="[--duration:30s]">
           {technologies.map((tech) => (
@@ -63,8 +68,18 @@ const TechMarquee = () => {
           ))}
         </MarqueeCard>
 
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white" />
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r",
+            bgColor && `from-${bgColor}`
+          )}
+        />
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l",
+            bgColor && `from-${bgColor}`
+          )}
+        />
       </div>
     </div>
   );
