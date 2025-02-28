@@ -65,9 +65,9 @@ const UserButton = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Link href="/sign-in">
-          <Button>Sign In</Button>
-        </Link>
+        <Button asChild>
+          <Link href="/sign-in">Sign In</Link>
+        </Button>
       )}
     </>
   );
