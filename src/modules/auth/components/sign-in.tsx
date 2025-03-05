@@ -10,7 +10,7 @@ import { signIn } from "@/modules/auth/lib/auth-client";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github, Loader2 } from "lucide-react";
+import { Fingerprint, Github, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -32,6 +32,7 @@ import {
 // Internal dependencies - Hooks
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -41,6 +42,7 @@ const formSchema = z.object({
 });
 
 export default function SignIn() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loadingGithub, setLoadingGithub] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -175,6 +177,35 @@ export default function SignIn() {
               <Github size={16} />
             )}
             Continue with Github
+          </Button>
+
+          <Button
+            variant="outline"
+            disabled={loadingGithub}
+            className={cn("w-full gap-2")}
+            onClick={async () => {
+              await signIn.passkey({
+                fetchOptions: {
+                  onResponse: () => {
+                    setLoadingGithub(false);
+                    router.refresh();
+                  },
+                  onRequest: () => {
+                    setLoadingGithub(true);
+                  },
+                  onError: (ctx) => {
+                    toast.error(ctx.error.message);
+                  },
+                },
+              });
+            }}
+          >
+            {loadingGithub ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Fingerprint size={16} />
+            )}
+            Sign in with Passkey
           </Button>
         </div>
       </CardContent>

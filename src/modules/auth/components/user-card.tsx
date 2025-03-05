@@ -33,7 +33,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { AddPasskey, ListPasskeys } from "./passkeys";
 // Types
 import { Session } from "@/modules/auth/lib/auth-types";
 
@@ -133,7 +133,7 @@ const UserCard = (props: {
                     {new UAParser(session.userAgent || "").getOS().name},{" "}
                     {new UAParser(session.userAgent || "").getBrowser().name}
                     <button
-                      className="text-red-500 opacity-80  cursor-pointer text-xs border-muted-foreground border-red-600  underline "
+                      className="text-red-500 opacity-80  cursor-pointer text-xs border-muted-foreground underline "
                       onClick={async () => {
                         setIsTerminating(session.id);
                         const res = await client.revokeSession({
@@ -161,6 +161,14 @@ const UserCard = (props: {
                 </div>
               );
             })}
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm">Passkeys</p>
+          <div className="flex gap-2 flex-wrap">
+            <AddPasskey />
+            <ListPasskeys />
+          </div>
         </div>
       </CardContent>
       <CardFooter className="gap-2 justify-between items-center">

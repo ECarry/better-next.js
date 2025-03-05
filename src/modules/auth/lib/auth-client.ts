@@ -1,9 +1,9 @@
 import { toast } from "sonner";
 import { createAuthClient } from "better-auth/react";
-import { adminClient } from "better-auth/client/plugins";
+import { adminClient, passkeyClient } from "better-auth/client/plugins";
 
 export const client = createAuthClient({
-  plugins: [adminClient()],
+  plugins: [adminClient(), passkeyClient()],
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
