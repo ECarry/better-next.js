@@ -90,7 +90,7 @@ better-nextjs/
 Run migrations:
 
 ```bash
-bunx drizzle-kit push
+bun drizzle-kit push
 ```
 
 ## 📝 License

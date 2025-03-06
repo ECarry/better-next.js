@@ -9,15 +9,9 @@ import {
   SiDrizzle,
   SiTrpc,
 } from "react-icons/si";
-
-import { cn } from "@/lib/utils";
 import { MarqueeCard } from "./marquee-card";
 
-interface Props {
-  bgColor?: string;
-}
-
-const TechMarquee = ({ bgColor }: Props) => {
+const TechMarquee = () => {
   return (
     <div className="flex items-center gap-12 py-8 rounded-xl">
       <div className="relative flex-1 overflow-hidden">
@@ -29,19 +23,6 @@ const TechMarquee = ({ bgColor }: Props) => {
             </div>
           ))}
         </MarqueeCard>
-
-        <div
-          className={cn(
-            "pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r",
-            bgColor && `from-${bgColor}`
-          )}
-        />
-        <div
-          className={cn(
-            "pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l",
-            bgColor && `from-${bgColor}`
-          )}
-        />
       </div>
     </div>
   );
