@@ -5,6 +5,7 @@ import Link from "next/link";
 import FlipLink from "./flip-link";
 import { TbBrandNextjs } from "react-icons/tb";
 import { ThemeToggle } from "./theme-toggle";
+import UserButton from "@/modules/auth/components/user-button";
 
 const Navbar = () => {
   return (
@@ -23,6 +24,7 @@ const Navbar = () => {
 
       <div className="ml-auto flex items-center gap-4">
         <ThemeToggle />
+        <UserButton />
       </div>
     </div>
   );
