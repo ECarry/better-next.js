@@ -13,11 +13,16 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LogOut, Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const UserButton = () => {
   const router = useRouter();
   const [isSignOut, setIsSignOut] = useState<boolean>(false);
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
+
+  if (isPending) {
+    return <Skeleton className="size-9 rounded-full" />;
+  }
 
   return (
     <>
