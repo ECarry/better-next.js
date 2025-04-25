@@ -5,11 +5,12 @@ import { trpc } from "@/trpc/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import Link from "next/link";
+import Error from "@/components/error";
 
 export const PostsSection = () => {
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <ErrorBoundary fallback={<p>Something went wrong</p>}>
+      <ErrorBoundary fallback={<Error />}>
         <PostsSectionSuspense />
       </ErrorBoundary>
     </Suspense>
