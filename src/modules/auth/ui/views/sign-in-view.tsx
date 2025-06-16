@@ -21,6 +21,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlert } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "../../lib/auth-client";
+import { FaGithub } from "react-icons/fa";
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -159,6 +160,7 @@ export const SignInView = () => {
                     disabled={pending}
                     onClick={() => signInWithSocial("github")}
                   >
+                    <FaGithub className="size-5" />
                     Github
                   </Button>
                 </div>

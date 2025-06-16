@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlert } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 const signUpSchema = z
   .object({
@@ -210,6 +211,7 @@ export const SignUpView = () => {
                     disabled={pending}
                     onClick={() => signUpWithSocial("github")}
                   >
+                    <FaGithub className="size-5" />
                     Github
                   </Button>
                 </div>
