@@ -1,7 +1,32 @@
-import React from "react";
+import { Suspense } from "react";
+import type { SearchParams } from "nuqs/server";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { ErrorBoundary } from "react-error-boundary";
+import { loadSearchParams } from "@/modules/post/params";
+import { DashboardPostsView } from "@/modules/post/ui/views/dashboard-posts-view";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-const page = () => {
-  return <div>dashboard posts page</div>;
+type Props = {
+  searchParams: Promise<SearchParams>;
+};
+
+const page = async ({ searchParams }: Props) => {
+  const filters = await loadSearchParams(searchParams);
+
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(
+    trpc.posts.getMany.queryOptions({ ...filters })
+  );
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ErrorBoundary fallback={<div>Error</div>}>
+          <DashboardPostsView />
+        </ErrorBoundary>
+      </Suspense>
+    </HydrationBoundary>
+  );
 };
 
 export default page;
