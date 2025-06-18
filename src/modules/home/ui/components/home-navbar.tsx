@@ -15,8 +15,7 @@ export const HomeNavbar = () => {
       <nav className="hidden lg:flex gap-4 ml-6">
         <FlipLink href="/posts">Posts</FlipLink>
         <FlipLink href="/profile">profile</FlipLink>
-        <FlipLink href="/admin">Admin</FlipLink>
-        <FlipLink href="/about">About</FlipLink>
+        <FlipLink href="/dashboard">Dashboard</FlipLink>
       </nav>
 
       <div className="ml-auto flex items-center gap-4"></div>

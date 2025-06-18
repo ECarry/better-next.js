@@ -42,12 +42,12 @@ const data = {
     },
     {
       title: "Posts",
-      url: "/posts",
+      url: "/dashboard/posts",
       icon: IconArticle,
     },
     {
       title: "Users",
-      url: "/users",
+      url: "/dashboard/users",
       icon: IconUsers,
     },
   ],

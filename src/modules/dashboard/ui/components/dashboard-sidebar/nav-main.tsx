@@ -22,6 +22,16 @@ export function NavMain({
   }[];
 }) {
   const pathname = usePathname();
+  const exactMatchItem = items.find((item) => item.url === pathname);
+  const bestMatchItem = items.reduce((best, item) => {
+    if (
+      pathname.startsWith(item.url) &&
+      (!best || item.url.length > best.url.length)
+    ) {
+      return item;
+    }
+    return best;
+  }, null as (typeof items)[0] | null);
 
   return (
     <SidebarGroup>
@@ -42,7 +52,11 @@ export function NavMain({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
-                isActive={pathname.startsWith(item.url)}
+                isActive={
+                  exactMatchItem
+                    ? exactMatchItem.url === item.url
+                    : bestMatchItem?.url === item.url
+                }
                 asChild
               >
                 <Link href={item.url}>
