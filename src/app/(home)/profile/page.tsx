@@ -12,6 +12,8 @@ const ProfilePage = async () => {
     }),
   ]);
 
+  console.log(session);
+
   return (
     <div className="w-full">
       <div className="flex gap-4 flex-col max-w-[800px] mx-auto">
