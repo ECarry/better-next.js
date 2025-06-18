@@ -1,6 +1,6 @@
 import z from "zod";
 import { db } from "@/db";
-import { createTRPCRouter, baseProcedure } from "@/trpc/init";
+import { createTRPCRouter, baseProcedure, adminProcedure } from "@/trpc/init";
 import { count, desc, eq, ilike } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import {
@@ -12,6 +12,25 @@ import {
 import { posts } from "@/db/schema";
 
 export const postsRouter = createTRPCRouter({
+  create: adminProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const [data] = await db
+        .insert(posts)
+        .values({
+          title: input.title,
+          content: input.content,
+          slug: input.title.toLowerCase().replace(/\s+/g, "-"),
+        })
+        .returning();
+
+      return data;
+    }),
   getOne: baseProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
