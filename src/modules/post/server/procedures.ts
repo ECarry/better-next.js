@@ -20,24 +20,53 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
+      const slug = input.title.toLowerCase().replace(/\s+/g, "-");
+      const [existingPost] = await db
+        .select()
+        .from(posts)
+        .where(eq(posts.slug, slug));
+      if (existingPost) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Post with this title already exists",
+        });
+      }
+
       const [data] = await db
         .insert(posts)
         .values({
           title: input.title,
           content: input.content,
-          slug: input.title.toLowerCase().replace(/\s+/g, "-"),
+          slug: slug,
         })
         .returning();
 
       return data;
     }),
-  getOne: baseProcedure
+  remove: adminProcedure
     .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const [data] = await db
+        .delete(posts)
+        .where(eq(posts.id, input.id))
+        .returning();
+
+      if (!data) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Post not found",
+        });
+      }
+
+      return data;
+    }),
+  getOne: baseProcedure
+    .input(z.object({ slug: z.string() }))
     .query(async ({ input }) => {
       const [data] = await db
         .select()
         .from(posts)
-        .where(eq(posts.id, input.id));
+        .where(eq(posts.slug, input.slug));
 
       if (!data) {
         throw new TRPCError({

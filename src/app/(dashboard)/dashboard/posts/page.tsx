@@ -5,6 +5,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { loadSearchParams } from "@/modules/post/params";
 import { DashboardPostsView } from "@/modules/post/ui/views/dashboard-posts-view";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { PostsListHeader } from "@/modules/post/ui/components/posts-list-header";
 
 type Props = {
   searchParams: Promise<SearchParams>;
@@ -19,13 +20,16 @@ const page = async ({ searchParams }: Props) => {
   );
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ErrorBoundary fallback={<div>Error</div>}>
-          <DashboardPostsView />
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
+    <>
+      <PostsListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ErrorBoundary fallback={<div>Error</div>}>
+            <DashboardPostsView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </>
   );
 };
 

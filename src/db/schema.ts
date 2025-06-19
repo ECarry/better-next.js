@@ -107,7 +107,7 @@ export const posts = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     slug: text("slug").unique().notNull(),
-    title: text("title"),
+    title: text("title").notNull(),
     content: text("content"),
     description: text("description"),
     coverImage: text("cover_image"),
