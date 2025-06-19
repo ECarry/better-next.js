@@ -60,7 +60,7 @@ export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   if (!ctx.auth.user?.role || ctx.auth.user.role !== "admin") {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Forbidden",
+      message: "Forbidden, Need admin role",
     });
   }
 
