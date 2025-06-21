@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -29,18 +30,26 @@ export function SiteHeader() {
             <BreadcrumbItem>
               <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
             </BreadcrumbItem>
-            {pathname.split("/").length > 2 && <BreadcrumbSeparator />}
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {(() => {
-                  const lastSegment = pathname.split("/").pop();
-                  if (!lastSegment || lastSegment === "dashboard") return "";
-                  return (
-                    lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1)
-                  );
-                })()}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
+            {pathname.split("/").filter(Boolean).slice(1).map((segment, index, segments) => {
+              // Skip 'dashboard' segment as we already have it as the first item
+              if (segment === "dashboard") return null;
+              
+              const segmentPath = `/dashboard/${segments.slice(0, index + 1).join("/")}`;
+              const formattedSegment = segment.charAt(0).toUpperCase() + segment.slice(1);
+              
+              return (
+                <React.Fragment key={segmentPath}>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    {index === segments.length - 1 ? (
+                      <BreadcrumbPage>{formattedSegment}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink href={segmentPath}>{formattedSegment}</BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                </React.Fragment>
+              );
+            })}
           </BreadcrumbList>
         </Breadcrumb>
         <div className="ml-auto flex items-center gap-2">
