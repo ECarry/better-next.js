@@ -1,4 +1,7 @@
 import { Suspense } from "react";
+import { auth } from "@/modules/auth/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
@@ -12,6 +15,14 @@ type Props = {
 };
 
 const page = async ({ searchParams }: Props) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   const filters = await loadSearchParams(searchParams);
 
   const queryClient = getQueryClient();
