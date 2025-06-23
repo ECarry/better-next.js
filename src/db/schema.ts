@@ -11,7 +11,14 @@ import {
   integer,
   bigint,
   pgEnum,
+  foreignKey,
+  primaryKey,
 } from "drizzle-orm/pg-core";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
 
 // Role enum definition
 export const roleEnum = pgEnum("user_role", ["admin", "user", "plus"]);
@@ -142,7 +149,6 @@ export const comments = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     text: text("text").notNull(),
-    likes: integer("likes").default(0).notNull(),
     postId: uuid("post_id")
       .notNull()
       .references(() => posts.id, {
@@ -160,9 +166,11 @@ export const comments = pgTable(
     ...timestamps,
   },
   (t) => [
-    index("comment_post_idx").on(t.postId),
-    index("comment_user_idx").on(t.userId),
-    index("comment_parent_idx").on(t.parentId),
+    foreignKey({
+      columns: [t.parentId],
+      foreignColumns: [t.id],
+      name: "comments_parent_id_fkey",
+    }).onDelete("cascade"),
   ]
 );
 
@@ -175,9 +183,52 @@ export const commentRelations = relations(comments, ({ one, many }) => ({
     fields: [comments.postId],
     references: [posts.id],
   }),
-  parent: one(comments, {
+  parentId: one(comments, {
     fields: [comments.parentId],
     references: [comments.id],
+    relationName: "comments_parent_id_fkey",
   }),
-  replies: many(comments, { relationName: "parent" }),
+
+  replies: many(comments, { relationName: "comments_replies_fkey" }),
 }));
+
+export const commentsInsertSchema = createInsertSchema(comments);
+export const commentsSelectSchema = createSelectSchema(comments);
+export const commentsUpdateSchema = createUpdateSchema(comments);
+
+export const reactionTypes = pgEnum("reaction_type", ["like", "dislike"]);
+
+export const commentsReactions = pgTable(
+  "comments_reactions",
+  {
+    userId: text("user_id")
+      .references(() => user.id, { onDelete: "cascade" })
+      .notNull(),
+    commentId: uuid("comment_id")
+      .references(() => comments.id, { onDelete: "cascade" })
+      .notNull(),
+    type: reactionTypes("type").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [
+    primaryKey({
+      name: "comments_reactions_pk",
+      columns: [t.userId, t.commentId],
+    }),
+  ]
+);
+
+export const commentsReactionsRelations = relations(
+  commentsReactions,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [commentsReactions.userId],
+      references: [user.id],
+    }),
+    comment: one(comments, {
+      fields: [commentsReactions.commentId],
+      references: [comments.id],
+    }),
+  })
+);
