@@ -1,7 +1,22 @@
 import { db } from "@/db";
-import { comments } from "@/db/schema";
-import { inArray } from "drizzle-orm";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { comments, commentsReactions, user } from "@/db/schema";
+import {
+  and,
+  count,
+  desc,
+  eq,
+  getTableColumns,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  or,
+} from "drizzle-orm";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -46,5 +61,103 @@ export const commentsRouter = createTRPCRouter({
         .returning();
 
       return newComment;
+    }),
+  getMany: baseProcedure
+    .input(
+      z.object({
+        postId: z.string().uuid(),
+        parentId: z.string().uuid().nullish(),
+        cursor: z
+          .object({
+            id: z.string().uuid(),
+            updatedAt: z.date(),
+          })
+          .nullish(),
+        limit: z.number().min(1).max(100),
+      })
+    )
+    .query(async ({ input }) => {
+      const { postId, parentId, cursor, limit } = input;
+
+      const replies = db.$with("replies").as(
+        db
+          .select({
+            parentId: comments.parentId,
+            count: count(comments.id).as("count"),
+          })
+          .from(comments)
+          .where(isNotNull(comments.parentId))
+          .groupBy(comments.parentId)
+      );
+
+      const [totalData, data] = await Promise.all([
+        db
+          .select({
+            total: count(),
+          })
+          .from(comments)
+          .where(eq(comments.postId, postId)),
+        db
+          .with(replies)
+          .select({
+            ...getTableColumns(comments),
+            user,
+            replyCount: replies.count,
+            likeCount: db.$count(
+              commentsReactions,
+              and(
+                eq(commentsReactions.type, "like"),
+                eq(commentsReactions.commentId, comments.id)
+              )
+            ),
+            dislikeCount: db.$count(
+              commentsReactions,
+              and(
+                eq(commentsReactions.type, "dislike"),
+                eq(commentsReactions.commentId, comments.id)
+              )
+            ),
+          })
+          .from(comments)
+          .where(
+            and(
+              eq(comments.postId, postId),
+              parentId
+                ? eq(comments.parentId, parentId)
+                : isNull(comments.parentId),
+              cursor
+                ? or(
+                    lt(comments.updatedAt, cursor.updatedAt),
+                    and(
+                      eq(comments.updatedAt, cursor.updatedAt),
+                      lt(comments.id, cursor.id)
+                    )
+                  )
+                : undefined
+            )
+          )
+          .innerJoin(user, eq(comments.userId, user.id))
+          .leftJoin(
+            commentsReactions,
+            eq(comments.id, commentsReactions.commentId)
+          )
+          .leftJoin(replies, eq(comments.id, replies.parentId))
+          .orderBy(desc(comments.updatedAt), desc(comments.id))
+          .limit(limit + 1),
+      ]);
+
+      const hasMore = data.length > limit;
+      // Remove the last item if there is more data
+      const items = hasMore ? data.slice(0, -1) : data;
+      // Set the next cursor to the last item if there is more data
+      const lastItem = items[items.length - 1];
+      const nextCursor = hasMore
+        ? {
+            id: lastItem.id,
+            updatedAt: lastItem.updatedAt,
+          }
+        : null;
+
+      return { items, nextCursor, totalCount: totalData[0].total };
     }),
 });
