@@ -3,6 +3,7 @@
 import { useTRPC } from "@/trpc/client";
 import { usePostsFilters } from "../../hooks/use-posts-filters";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 export const PostsView = () => {
   const trpc = useTRPC();
@@ -12,5 +13,14 @@ export const PostsView = () => {
     trpc.posts.getMany.queryOptions({ ...filters })
   );
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div>
+      {data.items.map((post) => (
+        <div key={post.id}>
+          <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+          <p>{post.description}</p>
+        </div>
+      ))}
+    </div>
+  );
 };

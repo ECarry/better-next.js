@@ -149,9 +149,9 @@ export const comments = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     text: text("text").notNull(),
-    postId: uuid("post_id")
+    postSlug: text("post_slug")
       .notNull()
-      .references(() => posts.id, {
+      .references(() => posts.slug, {
         onDelete: "cascade",
       }),
     userId: text("user_id")
@@ -180,8 +180,8 @@ export const commentRelations = relations(comments, ({ one, many }) => ({
     references: [user.id],
   }),
   post: one(posts, {
-    fields: [comments.postId],
-    references: [posts.id],
+    fields: [comments.postSlug],
+    references: [posts.slug],
   }),
   parentId: one(comments, {
     fields: [comments.parentId],

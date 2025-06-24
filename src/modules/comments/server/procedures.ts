@@ -25,13 +25,13 @@ export const commentsRouter = createTRPCRouter({
     .input(
       z.object({
         parentId: z.string().uuid().nullish(),
-        postId: z.string().uuid(),
+        postSlug: z.string(),
         text: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const { id: userId } = ctx.auth.user;
-      const { postId, text, parentId } = input;
+      const { postSlug, text, parentId } = input;
 
       const [existingComment] = await db
         .select()
@@ -53,7 +53,7 @@ export const commentsRouter = createTRPCRouter({
       const [newComment] = await db
         .insert(comments)
         .values({
-          postId,
+          postSlug,
           userId,
           parentId,
           text,
@@ -65,7 +65,7 @@ export const commentsRouter = createTRPCRouter({
   getMany: baseProcedure
     .input(
       z.object({
-        postId: z.string().uuid(),
+        postSlug: z.string(),
         parentId: z.string().uuid().nullish(),
         cursor: z
           .object({
@@ -77,7 +77,7 @@ export const commentsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input }) => {
-      const { postId, parentId, cursor, limit } = input;
+      const { postSlug, parentId, cursor, limit } = input;
 
       const replies = db.$with("replies").as(
         db
@@ -96,7 +96,7 @@ export const commentsRouter = createTRPCRouter({
             total: count(),
           })
           .from(comments)
-          .where(eq(comments.postId, postId)),
+          .where(eq(comments.postSlug, postSlug)),
         db
           .with(replies)
           .select({
@@ -121,7 +121,7 @@ export const commentsRouter = createTRPCRouter({
           .from(comments)
           .where(
             and(
-              eq(comments.postId, postId),
+              eq(comments.postSlug, postSlug),
               parentId
                 ? eq(comments.parentId, parentId)
                 : isNull(comments.parentId),
