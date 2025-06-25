@@ -7,7 +7,6 @@ import {
   uuid,
   uniqueIndex,
   index,
-  PgColumn,
   integer,
   bigint,
   pgEnum,
@@ -159,9 +158,7 @@ export const comments = pgTable(
       .references(() => user.id, {
         onDelete: "cascade",
       }),
-    parentId: uuid("parent_id").references((): PgColumn => comments.id, {
-      onDelete: "cascade",
-    }),
+    parentId: uuid("parent_id"),
 
     ...timestamps,
   },

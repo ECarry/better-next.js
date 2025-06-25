@@ -1,5 +1,6 @@
 "use client";
 
+import { CommentForm } from "@/modules/comments/ui/components/comment-form";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -18,6 +19,10 @@ export const PostView = ({ slug }: { slug: string }) => {
         <h1>{post.title}</h1>
         <p>{post.description}</p>
         <p>{post.content}</p>
+      </div>
+
+      <div>
+        <CommentForm postSlug={slug} />
       </div>
 
       <h2>Comments</h2>
