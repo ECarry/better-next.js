@@ -53,8 +53,12 @@ export const CommentForm = ({
         toast.success("Comment added");
         onSuccess?.();
       },
-      onError: (e) => {
-        toast.error(e.message);
+      onError: (error) => {
+        toast.error("Failed to add comment");
+
+        if (error.data?.code === "UNAUTHORIZED") {
+          toast.error("You must be logged in to comment");
+        }
       },
     })
   );
