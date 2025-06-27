@@ -1,6 +1,7 @@
 "use client";
 
 import { CommentForm } from "@/modules/comments/ui/components/comment-form";
+import { CommentItem } from "@/modules/comments/ui/components/comment-item";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -26,11 +27,9 @@ export const PostView = ({ slug }: { slug: string }) => {
       </div>
 
       <h2>Comments</h2>
-      <div>
+      <div className="flex flex-col gap-4 mt-2">
         {comments.items.map((comment) => (
-          <div key={comment.id}>
-            <p>{comment.text}</p>
-          </div>
+          <CommentItem key={comment.id} comment={comment} />
         ))}
       </div>
     </div>
