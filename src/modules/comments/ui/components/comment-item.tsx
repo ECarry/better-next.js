@@ -17,6 +17,7 @@ import { useState } from "react";
 import { CommentForm } from "./comment-form";
 import { CommentsGetManyOutPut } from "../../types";
 import { UserAvatar } from "@/components/user-avatar";
+import { CommentReplies } from "./comment-replies";
 
 interface CommentItemProps {
   comment: CommentsGetManyOutPut["items"][number];
@@ -100,6 +101,10 @@ export const CommentItem = ({
             {comment.replyCount} replies
           </Button>
         </div>
+      )}
+
+      {comment.replyCount > 0 && variant === "comment" && isRepliesOpen && (
+        <CommentReplies parentId={comment.id} postSlug={comment.postSlug} />
       )}
     </div>
   );
