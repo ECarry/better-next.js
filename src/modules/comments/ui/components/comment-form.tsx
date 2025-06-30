@@ -81,6 +81,9 @@ export const CommentForm = ({
     onCancel?.();
   };
 
+  // Watch the text field to determine if the button should be disabled
+  const textValue = form.watch("text");
+
   return (
     <Form {...form}>
       <form className="flex gap-4 group" onSubmit={form.handleSubmit(onSubmit)}>
@@ -116,7 +119,7 @@ export const CommentForm = ({
                 Cancel
               </Button>
             )}
-            <Button type="submit" size="sm" disabled={create.isPending}>
+            <Button type="submit" size="sm" disabled={create.isPending || !textValue.trim()}>
               {variant === "reply" ? "Reply" : "Comment"}
             </Button>
           </div>
