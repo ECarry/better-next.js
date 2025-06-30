@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { CommentItem } from "./comment-item";
 import { useTRPC } from "@/trpc/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface CommentRepliesProps {
   parentId: string;
@@ -11,8 +11,8 @@ interface CommentRepliesProps {
 export const CommentReplies = ({ parentId, postSlug }: CommentRepliesProps) => {
   const trpc = useTRPC();
 
-  const { data, isLoading } = useSuspenseQuery(
-    trpc.comments.getMany.queryOptions({ postSlug, limit: 10, parentId })
+  const { data, isLoading } = useQuery(
+    trpc.comments.getMany.queryOptions({ postSlug, parentId, limit: 10 })
   );
 
   return (
