@@ -16,18 +16,23 @@ export const CommentReplies = ({ parentId, postSlug }: CommentRepliesProps) => {
   );
 
   return (
-    <div className="pl-14">
-      <div className="flex flex-col gap-4 mt-2">
+    <div>
+      <div className="flex flex-col gap-5 mt-2">
         {isLoading && (
-          <div className="flex items-center justify-center">
-            <Loader2 className="animate-spin size-6 text-muted-foreground" />
+          <div className="flex items-center justify-center py-3">
+            <Loader2 className="animate-spin size-5 text-blue-500" />
           </div>
         )}
         {data?.items.map((comment, index) => (
-          <div key={index}>
+          <div key={index} className="py-2">
             <CommentItem key={comment.id} comment={comment} variant="reply" />
           </div>
         ))}
+        {!isLoading && data?.items.length === 0 && (
+          <div className="text-gray-500 text-sm italic py-2">
+            No replies yet.
+          </div>
+        )}
       </div>
     </div>
   );
