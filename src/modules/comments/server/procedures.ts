@@ -62,6 +62,25 @@ export const commentsRouter = createTRPCRouter({
 
       return newComment;
     }),
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.auth.user;
+      const { id } = input;
+
+      const [deletedComment] = await db
+        .delete(comments)
+        .where(and(eq(comments.id, id), eq(comments.userId, userId)))
+        .returning();
+
+      if (!deletedComment) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      return deletedComment;
+    }),
   getMany: baseProcedure
     .input(
       z.object({
