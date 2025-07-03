@@ -1,7 +1,7 @@
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
-import { DashboardPostView } from "@/modules/post/ui/views/dashboard-post-view";
+import { DashboardPostView } from "@/modules/posts/ui/views/dashboard-post-view";
 import { auth } from "@/modules/auth/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

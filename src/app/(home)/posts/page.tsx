@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import type { SearchParams } from "nuqs/server";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
-import { loadSearchParams } from "@/modules/post/params";
-import { PostsView } from "@/modules/post/ui/views/posts-view";
+import { loadSearchParams } from "@/modules/posts/params";
+import { PostsView } from "@/modules/posts/ui/views/posts-view";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 type Props = {

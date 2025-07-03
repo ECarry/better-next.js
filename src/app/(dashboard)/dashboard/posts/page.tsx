@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
-import { loadSearchParams } from "@/modules/post/params";
-import { DashboardPostsView } from "@/modules/post/ui/views/dashboard-posts-view";
+import { loadSearchParams } from "@/modules/posts/params";
+import { DashboardPostsView } from "@/modules/posts/ui/views/dashboard-posts-view";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { PostsListHeader } from "@/modules/post/ui/components/posts-list-header";
+import { PostsListHeader } from "@/modules/posts/ui/components/posts-list-header";
 
 type Props = {
   searchParams: Promise<SearchParams>;

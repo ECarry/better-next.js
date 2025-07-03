@@ -1,7 +1,7 @@
 import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
-import { PostView } from "@/modules/post/ui/views/post-view";
+import { PostView } from "@/modules/posts/ui/views/post-view";
 
 interface PageProps {
   params: Promise<{ postSlug: string }>;

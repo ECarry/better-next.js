@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NewPostDialog } from "@/modules/post/ui/components/new-post-dialog";
+import { NewPostDialog } from "@/modules/posts/ui/components/new-post-dialog";
 
 export function NavMain({
   items,

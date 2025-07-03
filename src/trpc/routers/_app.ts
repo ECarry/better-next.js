@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "../init";
-import { postsRouter } from "@/modules/post/server/procedures";
+import { postsRouter } from "@/modules/posts/server/procedures";
 import { commentsRouter } from "@/modules/comments/server/procedures";
 
 export const appRouter = createTRPCRouter({
