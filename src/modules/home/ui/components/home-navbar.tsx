@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { TbBrandNextjs } from "react-icons/tb";
 import FlipLink from "../../../../components/flip-link";
+import { UserButton } from "./user-button";
 
 export const HomeNavbar = () => {
   return (
@@ -18,7 +19,9 @@ export const HomeNavbar = () => {
         <FlipLink href="/dashboard">Dashboard</FlipLink>
       </nav>
 
-      <div className="ml-auto flex items-center gap-4"></div>
+      <div className="ml-auto flex items-center gap-4">
+        <UserButton />
+      </div>
     </div>
   );
 };
