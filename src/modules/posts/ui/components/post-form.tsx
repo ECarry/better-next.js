@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { postInsertSchema } from "../../schemas";
+import FileUploader from "@/modules/cloudflare/ui/components/file-uploader";
 
 interface PostFormProps {
   onSuccess?: () => void;
@@ -86,6 +87,8 @@ export const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
             </FormItem>
           )}
         />
+
+        <FileUploader />
 
         <div className="flex justify-end gap-2">
           {onCancel && (
