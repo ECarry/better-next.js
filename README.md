@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## File Uploads
+
+1. Client Side state to later on display the image
+2. Create Route Handler to generate Presigned URL
+3. Call Route handler
+4. Upload File using the Presigned URL
+5. Showcase uploaded image
+6. Delete uploaded image
