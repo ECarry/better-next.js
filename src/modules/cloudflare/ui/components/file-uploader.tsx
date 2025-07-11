@@ -20,6 +20,12 @@ const FileUploader = () => {
     }>
   >([]);
 
+  const uploadFile = (file: File) => {
+    setFile((prev) =>
+      prev.map((f) => (f.file === file ? { ...f, uploading: true } : f))
+    );
+  };
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
     if (acceptedFiles.length > 0) {
@@ -36,6 +42,8 @@ const FileUploader = () => {
         })),
       ]);
     }
+
+    acceptedFiles.forEach(uploadFile);
   }, []);
 
   const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
@@ -117,6 +125,7 @@ const FileUploader = () => {
                 ) : (
                   <button
                     onClick={() => {}}
+                    type="button"
                     className="text-red-500 hover:text-red-600"
                   >
                     Delete

@@ -3,7 +3,6 @@ import { adminProcedure, createTRPCRouter } from "@/trpc/init";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { TRPCError } from "@trpc/server";
-import { cache } from "react";
 import { z } from "zod";
 
 /**
@@ -14,43 +13,33 @@ import { z } from "zod";
  * @returns The complete public URL for accessing the file
  * @throws Error if CLOUDFLARE_R2_PUBLIC_URL is not configured
  */
-const getPublicUrl = cache((filename: string, folder: string) => {
-  const publicUrl = process.env.CLOUDFLARE_R2_PUBLIC_URL;
-  if (!publicUrl) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "CLOUDFLARE_R2_PUBLIC_URL is not configured",
-    });
-  }
-  return `${publicUrl}/${folder}/${filename}`;
-});
-
 export const cloudflareRouter = createTRPCRouter({
   createPresignedUrl: adminProcedure
     .input(
       z.object({
         filename: z.string(),
-        folder: z.string().default("photos"),
+        contentType: z.string(),
+        size: z.number(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { filename, folder } = input;
-        const key = `${folder}/${filename}`;
+        const { filename, contentType, size } = input;
+        const key = crypto.randomUUID() + "-" + filename;
 
         const command = new PutObjectCommand({
           Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
           Key: key,
+          ContentType: contentType,
+          ContentLength: size,
         });
 
-        const signedUrl = await getSignedUrl(s3Client, command, {
-          expiresIn: 60 * 60,
+        const presignedUrl = await getSignedUrl(s3Client, command, {
+          expiresIn: 60 * 6, // 6 minutes
         });
-        const publicUrl = getPublicUrl(filename, folder);
 
         return {
-          signedUrl,
-          publicUrl,
+          presignedUrl,
           key,
         };
       } catch (error) {
