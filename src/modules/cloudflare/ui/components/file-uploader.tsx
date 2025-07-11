@@ -5,9 +5,11 @@ import { cn } from "@/lib/utils";
 import { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "sonner";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
 
 const FileUploader = () => {
-  const [file, setFile] = useState<
+  const [files, setFiles] = useState<
     Array<{
       id: string;
       file: File;
@@ -19,17 +21,41 @@ const FileUploader = () => {
       objectUrl?: string;
     }>
   >([]);
+  const trpc = useTRPC();
+  const createPresignedUrlMutation = useMutation(
+    trpc.cloudflare.createPresignedUrl.mutationOptions({
+      onSuccess: (data, variables) => {
+        console.log(data, variables);
+      },
+      onError: (error, variables) => {
+        console.log(error, variables);
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.file.name === variables.filename
+              ? { ...f, uploading: false, progress: 0, error: true }
+              : f
+          )
+        );
+      },
+    })
+  );
 
   const uploadFile = (file: File) => {
-    setFile((prev) =>
+    setFiles((prev) =>
       prev.map((f) => (f.file === file ? { ...f, uploading: true } : f))
     );
+
+    createPresignedUrlMutation.mutate({
+      filename: file.name,
+      contentType: file.type,
+      size: file.size,
+    });
   };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files
     if (acceptedFiles.length > 0) {
-      setFile((prev) => [
+      setFiles((prev) => [
         ...prev,
         ...acceptedFiles.map((file) => ({
           id: crypto.randomUUID(),
@@ -91,9 +117,9 @@ const FileUploader = () => {
           <p>Drag &apos;n&apos; drop some file here, or click to select file</p>
         )}
       </div>
-      {file.length > 0 && (
+      {files.length > 0 && (
         <div className="mt-4">
-          {file.map((file) => (
+          {files.map((file) => (
             <div
               key={file.id}
               className="flex items-center justify-between mb-2"
