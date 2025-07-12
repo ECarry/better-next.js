@@ -24,8 +24,57 @@ const FileUploader = () => {
   const trpc = useTRPC();
   const createPresignedUrlMutation = useMutation(
     trpc.cloudflare.createPresignedUrl.mutationOptions({
-      onSuccess: (data, variables) => {
-        console.log(data, variables);
+      onSuccess: async (data, variables) => {
+        await new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const progressCompleted = (event.loaded / event.total) * 100;
+              setFiles((prev) =>
+                prev.map((f) =>
+                  f.file.name === variables.filename
+                    ? {
+                        ...f,
+                        progress: Math.round(progressCompleted),
+                        key: data.key,
+                      }
+                    : f
+                )
+              );
+            }
+          };
+
+          xhr.onload = () => {
+            if (xhr.status === 200 || xhr.status === 204) {
+              setFiles((prev) =>
+                prev.map((f) =>
+                  f.file.name === variables.filename
+                    ? {
+                        ...f,
+                        uploading: false,
+                        progress: 100,
+                        error: false,
+                      }
+                    : f
+                )
+              );
+
+              toast.success("File uploaded successfully");
+              resolve();
+            } else {
+              reject(new Error(`Upload failed with status ${xhr.status}`));
+            }
+          };
+
+          xhr.onerror = () => {
+            reject(new Error("Upload failed"));
+          };
+
+          xhr.open("PUT", data.presignedUrl);
+          xhr.setRequestHeader("Content-Type", files[0].file.type);
+          xhr.send(files[0].file);
+        });
       },
       onError: (error, variables) => {
         console.log(error, variables);
