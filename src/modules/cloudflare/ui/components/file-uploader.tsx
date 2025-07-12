@@ -68,6 +68,19 @@ const FileUploader = () => {
           };
 
           xhr.onerror = () => {
+            setFiles((prev) =>
+              prev.map((f) =>
+                f.file.name === variables.filename
+                  ? {
+                      ...f,
+                      uploading: false,
+                      error: true,
+                      progress: 0,
+                    }
+                  : f
+              )
+            );
+            toast.error("Upload failed");
             reject(new Error("Upload failed"));
           };
 
@@ -77,7 +90,6 @@ const FileUploader = () => {
         });
       },
       onError: (error, variables) => {
-        console.log(error, variables);
         setFiles((prev) =>
           prev.map((f) =>
             f.file.name === variables.filename
@@ -85,41 +97,48 @@ const FileUploader = () => {
               : f
           )
         );
+        toast.error("Failed to generate presigned URL");
       },
     })
   );
 
-  const uploadFile = (file: File) => {
-    setFiles((prev) =>
-      prev.map((f) => (f.file === file ? { ...f, uploading: true } : f))
-    );
+  const uploadFile = useCallback(
+    (file: File) => {
+      setFiles((prev) =>
+        prev.map((f) => (f.file === file ? { ...f, uploading: true } : f))
+      );
 
-    createPresignedUrlMutation.mutate({
-      filename: file.name,
-      contentType: file.type,
-      size: file.size,
-    });
-  };
+      createPresignedUrlMutation.mutate({
+        filename: file.name,
+        contentType: file.type,
+        size: file.size,
+      });
+    },
+    [createPresignedUrlMutation]
+  );
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Do something with the files
-    if (acceptedFiles.length > 0) {
-      setFiles((prev) => [
-        ...prev,
-        ...acceptedFiles.map((file) => ({
-          id: crypto.randomUUID(),
-          file,
-          uploading: false,
-          progress: 0,
-          isDeleting: false,
-          error: false,
-          objectUrl: URL.createObjectURL(file),
-        })),
-      ]);
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      // Do something with the files
+      if (acceptedFiles.length > 0) {
+        setFiles((prev) => [
+          ...prev,
+          ...acceptedFiles.map((file) => ({
+            id: crypto.randomUUID(),
+            file,
+            uploading: false,
+            progress: 0,
+            isDeleting: false,
+            error: false,
+            objectUrl: URL.createObjectURL(file),
+          })),
+        ]);
+      }
 
-    acceptedFiles.forEach(uploadFile);
-  }, []);
+      acceptedFiles.forEach(uploadFile);
+    },
+    [uploadFile]
+  );
 
   const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
     if (fileRejections.length > 0) {
