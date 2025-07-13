@@ -102,6 +102,18 @@ const FileUploader = () => {
     })
   );
 
+  const deleteFileMutation = useMutation(
+    trpc.cloudflare.deleteFile.mutationOptions({
+      onSuccess: () => {
+        toast.success("File deleted successfully");
+        setFiles((prev) => prev.filter((f) => !f.isDeleting));
+      },
+      onError: () => {
+        toast.error("Failed to delete file");
+      },
+    })
+  );
+
   const uploadFile = useCallback(
     (file: File) => {
       setFiles((prev) =>
@@ -169,6 +181,25 @@ const FileUploader = () => {
     },
   });
 
+  const handleDeleteFile = useCallback(
+    (key: string | undefined) => {
+      if (!key) {
+        return;
+      }
+      setFiles((prev) => {
+        const fileToDelete = prev.find((f) => f.key === key);
+        if (fileToDelete?.objectUrl) {
+          URL.revokeObjectURL(fileToDelete.objectUrl);
+        }
+        return prev.map((f) =>
+          f.key === key ? { ...f, isDeleting: true, objectUrl: undefined } : f
+        );
+      });
+      deleteFileMutation.mutate({ key });
+    },
+    [deleteFileMutation]
+  );
+
   return (
     <>
       <div
@@ -218,7 +249,7 @@ const FileUploader = () => {
                   </div>
                 ) : (
                   <button
-                    onClick={() => {}}
+                    onClick={() => handleDeleteFile(file.key)}
                     type="button"
                     className="text-red-500 hover:text-red-600"
                   >
