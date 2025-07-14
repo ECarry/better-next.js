@@ -8,7 +8,11 @@ import { toast } from "sonner";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 
-const FileUploader = () => {
+interface FileUploaderProps {
+  onUploadSuccess?: (key: string) => void;
+}
+
+const FileUploader = ({ onUploadSuccess }: FileUploaderProps) => {
   const [files, setFiles] = useState<
     Array<{
       id: string;
@@ -62,6 +66,7 @@ const FileUploader = () => {
 
               toast.success("File uploaded successfully");
               resolve();
+              onUploadSuccess?.(data.key);
             } else {
               reject(new Error(`Upload failed with status ${xhr.status}`));
             }
@@ -85,11 +90,11 @@ const FileUploader = () => {
           };
 
           xhr.open("PUT", data.presignedUrl);
-          xhr.setRequestHeader("Content-Type", files[0].file.type);
+          xhr.setRequestHeader("Content-Type", variables.contentType);
           xhr.send(files[0].file);
         });
       },
-      onError: (error, variables) => {
+      onError: (_error, variables) => {
         setFiles((prev) =>
           prev.map((f) =>
             f.file.name === variables.filename

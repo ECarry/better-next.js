@@ -47,7 +47,8 @@ export const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
     resolver: zodResolver(postInsertSchema),
     defaultValues: {
       title: "",
-      content: "",
+      description: "",
+      coverImageKey: "",
     },
   });
 
@@ -76,10 +77,10 @@ export const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
 
         <FormField
           control={form.control}
-          name="content"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Content</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea {...field} />
               </FormControl>
@@ -88,7 +89,9 @@ export const PostForm = ({ onSuccess, onCancel }: PostFormProps) => {
           )}
         />
 
-        <FileUploader />
+        <FileUploader
+          onUploadSuccess={(key) => form.setValue("coverImageKey", key)}
+        />
 
         <div className="flex justify-end gap-2">
           {onCancel && (

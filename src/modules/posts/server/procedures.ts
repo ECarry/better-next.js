@@ -16,7 +16,8 @@ export const postsRouter = createTRPCRouter({
     .input(
       z.object({
         title: z.string(),
-        content: z.string(),
+        description: z.string(),
+        coverImageKey: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -36,8 +37,9 @@ export const postsRouter = createTRPCRouter({
         .insert(posts)
         .values({
           title: input.title,
-          content: input.content,
+          description: input.description,
           slug: slug,
+          coverImageKey: input.coverImageKey,
         })
         .returning();
 

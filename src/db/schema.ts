@@ -116,7 +116,7 @@ export const posts = pgTable(
     title: text("title").notNull(),
     content: text("content"),
     description: text("description"),
-    coverImage: text("cover_image"),
+    coverImageKey: text("cover_image_key"),
     published: boolean("published").default(false),
     likes: integer("likes").default(0).notNull(),
     views: integer("views").default(0).notNull(),

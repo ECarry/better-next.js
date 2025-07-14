@@ -19,9 +19,19 @@ export const DashboardPostView = ({ slug }: { slug: string }) => {
     "Are you sure you want to delete this post?"
   );
 
+  const deleteFileMutation = useMutation(
+    trpc.cloudflare.deleteFile.mutationOptions({
+      onError: () => {
+        toast.error("Failed to delete file");
+      },
+    })
+  );
   const removePost = useMutation(
     trpc.posts.remove.mutationOptions({
       onSuccess: async () => {
+        if (data.coverImageKey) {
+          deleteFileMutation.mutate({ key: data.coverImageKey });
+        }
         await queryClient.invalidateQueries(
           trpc.posts.getMany.queryOptions({})
         );
