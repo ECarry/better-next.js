@@ -19,15 +19,20 @@ import {
 import { authClient } from "@/modules/auth/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function UserButton() {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
 
   const user = {
     name: session?.user?.name,
     email: session?.user?.email,
     avatar: session?.user?.image,
   };
+
+  if (isPending) {
+    return <Skeleton className="size-8 rounded-full" />;
+  }
 
   if (!session) {
     return (
