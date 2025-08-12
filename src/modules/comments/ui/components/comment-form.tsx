@@ -101,7 +101,7 @@ export const CommentForm = ({
                         ? "Reply to comment..."
                         : "Add a comment..."
                     }
-                    className="resize-none bg-transparent overflow-hidden min-h-0"
+                    className="resize-none overflow-hidden min-h-0 text-gray-700"
                   />
                 </FormControl>
                 <FormMessage />
@@ -119,7 +119,11 @@ export const CommentForm = ({
                 Cancel
               </Button>
             )}
-            <Button type="submit" size="sm" disabled={create.isPending || !textValue.trim()}>
+            <Button
+              type="submit"
+              size="sm"
+              disabled={create.isPending || !textValue.trim()}
+            >
               {variant === "reply" ? "Reply" : "Comment"}
             </Button>
           </div>
