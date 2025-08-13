@@ -30,6 +30,8 @@ export function UserButton() {
     avatar: session?.user?.image,
   };
 
+  const isPlus = session?.user?.role === "plus";
+
   if (isPending) {
     return <Skeleton className="size-8 rounded-full" />;
   }
@@ -45,10 +47,15 @@ export function UserButton() {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Avatar>
-          <AvatarImage src={user.avatar || ""} alt={user.name} />
-          <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-        </Avatar>
+        <div className="relative">
+          <Avatar>
+            <AvatarImage src={user.avatar || ""} alt={user.name} />
+            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          </Avatar>
+          {isPlus && (
+            <span className="absolute bottom-0 right-0 h-2 w-2 bg-green-500 rounded-full"></span>
+          )}
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
