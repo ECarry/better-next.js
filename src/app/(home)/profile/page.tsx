@@ -1,20 +1,15 @@
-import { headers } from "next/headers";
-import { auth } from "@/modules/auth/lib/auth";
-import UserCard from "@/modules/auth/ui/components/user-card";
 import { redirect } from "next/navigation";
+import UserCard from "@/modules/auth/ui/components/user-card";
+import { getSession, getActiveSessions } from "@/modules/auth/lib/get-session";
 
 const ProfilePage = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect("/sign-in");
   }
 
-  const activeSessions = await auth.api.listSessions({
-    headers: await headers(),
-  });
+  const activeSessions = await getActiveSessions();
 
   return (
     <div className="w-full">

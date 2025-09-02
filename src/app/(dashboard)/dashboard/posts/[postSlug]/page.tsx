@@ -2,17 +2,14 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { ErrorBoundary } from "react-error-boundary";
 import { Suspense } from "react";
 import { DashboardPostView } from "@/modules/posts/ui/views/dashboard-post-view";
-import { auth } from "@/modules/auth/lib/auth";
-import { headers } from "next/headers";
+import { getSession } from "@/modules/auth/lib/get-session";
 import { redirect } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ postSlug: string }>;
 }
 const page = async ({ params }: PageProps) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect("/sign-in");

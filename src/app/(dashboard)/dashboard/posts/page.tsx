@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import { auth } from "@/modules/auth/lib/auth";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -9,15 +7,14 @@ import { loadSearchParams } from "@/modules/posts/params";
 import { DashboardPostsView } from "@/modules/posts/ui/views/dashboard-posts-view";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { PostsListHeader } from "@/modules/posts/ui/components/posts-list-header";
+import { getSession } from "@/modules/auth/lib/get-session";
 
 type Props = {
   searchParams: Promise<SearchParams>;
 };
 
 const page = async ({ searchParams }: Props) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) {
     redirect("/sign-in");
