@@ -25,18 +25,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { authClient } from "@/modules/auth/lib/auth-client";
+import { User } from "@/modules/auth/lib/auth-types";
 
 interface Props {
-  name?: string;
-  email?: string;
-  avatar?: string | null;
-  isPending: boolean;
+  user: User;
 }
 
-export function NavUser({ name, email, avatar, isPending }: Props) {
+export function NavUser({ user }: Props) {
   const { isMobile } = useSidebar();
 
   const handleLogout = () => {
@@ -52,31 +49,18 @@ export function NavUser({ name, email, avatar, isPending }: Props) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              {isPending ? (
-                <>
-                  <Skeleton className="size-8 rounded-lg" />
-                  <div className="grid flex-1 text-left text-sm leading-tight gap-1">
-                    <Skeleton className="h-4 w-10" />
-                    <Skeleton className="h-3 w-28" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <Avatar className="h-8 w-8 rounded-lg grayscale">
-                    <AvatarImage src={avatar || ""} alt={name} />
-                    <AvatarFallback className="rounded-lg">
-                      {name?.slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{name}</span>
-                    <span className="text-muted-foreground truncate text-xs">
-                      {email}
-                    </span>
-                  </div>
-                </>
-              )}
-
+              <Avatar className="h-8 w-8 rounded-lg grayscale">
+                <AvatarImage src={user.image || ""} alt={user.name} />
+                <AvatarFallback className="rounded-lg">
+                  {user.name?.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="text-muted-foreground truncate text-xs">
+                  {user.email}
+                </span>
+              </div>
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -89,13 +73,13 @@ export function NavUser({ name, email, avatar, isPending }: Props) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={avatar || ""} alt={name} />
+                  <AvatarImage src={user.image || ""} alt={user.name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{name}</span>
+                  <span className="truncate font-medium">{user.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {email}
+                    {user.email}
                   </span>
                 </div>
               </div>

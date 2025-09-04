@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import {
   IconCamera,
   IconDashboard,
@@ -30,8 +27,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { authClient } from "@/modules/auth/lib/auth-client";
 import { TbBrandNextjs } from "react-icons/tb";
+import { User } from "@/modules/auth/lib/auth-types";
+import { getSession } from "@/modules/auth/lib/get-session";
 
 const data = {
   navMain: [
@@ -135,16 +133,10 @@ const data = {
   ],
 };
 
-export const DashboardSidebar = ({
+export const DashboardSidebar = async ({
   ...props
 }: React.ComponentProps<typeof Sidebar>) => {
-  const { data: session, isPending } = authClient.useSession();
-
-  const user = {
-    name: session?.user?.name,
-    email: session?.user?.email,
-    avatar: session?.user?.image,
-  };
+  const session = await getSession();
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -169,12 +161,7 @@ export const DashboardSidebar = ({
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser
-          name={user.name}
-          email={user.email}
-          avatar={user.avatar}
-          isPending={isPending}
-        />
+        <NavUser user={session?.user as User} />
       </SidebarFooter>
     </Sidebar>
   );
