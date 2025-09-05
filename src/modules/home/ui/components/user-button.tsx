@@ -1,8 +1,8 @@
-"use client";
-
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { User } from "@/modules/auth/lib/auth-types";
 import {
   IconCreditCard,
-  IconLogout,
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
@@ -16,27 +16,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authClient } from "@/modules/auth/lib/auth-client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LogoutButton } from "./logout-button";
 
-export function UserButton() {
-  const { data: session, isPending } = authClient.useSession();
+interface Props {
+  user: User;
+}
 
-  const user = {
-    name: session?.user?.name,
-    email: session?.user?.email,
-    avatar: session?.user?.image,
-  };
-
-  const isPlus = session?.user?.role === "plus";
-
-  if (isPending) {
-    return <Skeleton className="size-8 rounded-full" />;
-  }
-
-  if (!session) {
+export function UserButton({ user }: Props) {
+  if (!user) {
     return (
       <Button asChild>
         <Link href="/sign-in">Sign in</Link>
@@ -49,10 +36,10 @@ export function UserButton() {
       <DropdownMenuTrigger asChild>
         <div className="relative">
           <Avatar>
-            <AvatarImage src={user.avatar || ""} alt={user.name} />
+            <AvatarImage src={user.image || ""} alt={user.name} />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
-          {isPlus && (
+          {user.role === "plus" && (
             <span className="absolute bottom-0 right-0 h-2 w-2 bg-green-500 rounded-full"></span>
           )}
         </div>
@@ -66,7 +53,7 @@ export function UserButton() {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={user.avatar || ""} alt={user.name} />
+              <AvatarImage src={user.image || ""} alt={user.name} />
               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
@@ -93,10 +80,7 @@ export function UserButton() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => authClient.signOut()}>
-          <IconLogout />
-          Log out
-        </DropdownMenuItem>
+        <LogoutButton />
       </DropdownMenuContent>
     </DropdownMenu>
   );

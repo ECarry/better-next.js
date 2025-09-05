@@ -4,8 +4,12 @@ import Link from "next/link";
 import { TbBrandNextjs } from "react-icons/tb";
 import FlipLink from "../../../../components/flip-link";
 import { UserButton } from "./user-button";
+import { getSession } from "@/modules/auth/lib/get-session";
+import { User } from "@/modules/auth/lib/auth-types";
 
-export const HomeNavbar = () => {
+export const HomeNavbar = async () => {
+  const session = await getSession();
+
   return (
     <div className="max-w-7xl mx-auto h-16 w-full flex items-center px-4">
       <Link href="/" className="flex items-center gap-2">
@@ -20,7 +24,7 @@ export const HomeNavbar = () => {
       </nav>
 
       <div className="ml-auto flex items-center gap-4">
-        <UserButton />
+        <UserButton user={session?.user as User} />
       </div>
     </div>
   );
