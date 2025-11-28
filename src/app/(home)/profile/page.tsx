@@ -11,12 +11,12 @@ const tabs = [
 ];
 
 const user = {
-    name: "Alex Developer",
-    handle: "@alexdev",
-    bio: "Full-stack developer passionate about building beautiful UIs and scalable systems. Lover of coffee and code.",
-    location: "San Francisco, CA",
-    website: "alex.dev",
-    joinDate: "September 2023",
+    name: "Better Next.js",
+    handle: "@better-nextjs",
+    bio: "A collection of modern, production-ready Next.js templates and tools to help you build better websites.",
+    location: "Localhost",
+    website: "https://github.com/ECarry/better-next.js",
+    joinDate: "November 2025",
     stats: {
         posts: 42,
         followers: "12.5k",
