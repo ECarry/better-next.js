@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Zap, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, Shield, Database, ArrowLeftRight, Activity, ShieldCheck, Wind, Box } from "lucide-react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -70,18 +70,23 @@ export default function Home() {
         </motion.div>
 
         {/* Features Grid */}
-        <motion.div variants={container} className="mt-24 grid w-full max-w-5xl gap-8 sm:grid-cols-3">
+        <motion.div variants={container} className="mt-24 grid w-full max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: Zap, title: "Fast Performance", desc: "Optimized for speed with Bun and Next.js 15." },
-            { icon: Sparkles, title: "Modern UI", desc: "Beautifully designed components with Framer Motion." },
-            { icon: Shield, title: "Type Safe", desc: "Built with TypeScript and Zod for reliability." }
+            { icon: Zap, title: "Next.js 16", desc: "The latest features including React 19 support and partial prerendering." },
+            { icon: Sparkles, title: "shadcn/ui", desc: "Beautifully designed components built with Radix UI and Tailwind CSS." },
+            { icon: Database, title: "Drizzle ORM", desc: "Lightweight, type-safe, and serverless-ready ORM for modern apps." },
+            { icon: ArrowLeftRight, title: "tRPC", desc: "Experience end-to-end type safety without schemas or code generation." },
+            { icon: Activity, title: "TanStack Query", desc: "Powerful asynchronous state management for TS/JS, React, Vue, Svelte & Solid." },
+            { icon: ShieldCheck, title: "Better Auth", desc: "The most comprehensive authentication library for TypeScript." },
+            { icon: Wind, title: "Tailwind CSS", desc: "Rapidly build modern websites without ever leaving your HTML." },
+            { icon: Box, title: "Bun Runtime", desc: "Develop, test, run, and bundle JavaScript & TypeScript projects—all in one." }
           ].map((feature, i) => (
-            <motion.div key={i} variants={item} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 text-left transition-colors hover:bg-white/10">
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:text-indigo-300">
-                <feature.icon className="h-6 w-6" />
+            <motion.div key={i} variants={item} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 text-left transition-colors hover:bg-white/10">
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:text-indigo-300">
+                <feature.icon className="h-5 w-5" />
               </div>
-              <h3 className="mb-2 text-xl font-semibold text-white">{feature.title}</h3>
-              <p className="text-zinc-400">{feature.desc}</p>
+              <h3 className="mb-2 text-lg font-semibold text-white">{feature.title}</h3>
+              <p className="text-sm text-zinc-400">{feature.desc}</p>
             </motion.div>
           ))}
         </motion.div>
